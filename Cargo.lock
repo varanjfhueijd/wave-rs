@@ -2043,6 +2043,7 @@ name = "wave-integration-tests"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "dotenvy",
  "mockall",
  "tokio",
  "wave-core",

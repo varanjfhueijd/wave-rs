@@ -1,4 +1,8 @@
-# wave-rs
+# wave-rs 🌍
+
+[![CI](https://github.com/varanjfhueijd/wave-r/actions/workflows/ci.yml/badge.svg)](https://github.com/varanjfhueijd/wave-r/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](#licence)
+[![Rust](https://img.shields.io/badge/rust-2021%20edition-orange.svg)](https://www.rust-lang.org)
 
 **🇫🇷 Français** · [🇬🇧 English](#-english)
 
@@ -112,6 +116,31 @@ ses fixtures JSON dans `tests/fixtures/<provider>/`, et le nommage suit
 [`tests/integration`](tests/integration) vérifient l'interchangeabilité des
 quatre providers derrière `dyn Provider`, et montrent comment mocker le trait
 avec `mockall` côté code consommateur.
+
+### Tests live (optionnels)
+
+Les tests de [`tests/live`](tests/live) appellent les **vraies APIs sandbox**.
+Ils sont tous `#[ignore]` et ne tournent jamais en CI :
+
+```bash
+# .env rempli avec de vraies clés sandbox
+WAVE_LIVE_TESTS=true cargo test --test live -- --ignored --nocapture
+```
+
+Sans `WAVE_LIVE_TESTS=true` ou sans credentials, ils skippent proprement avec
+un message explicite — un contributeur n'ayant accès qu'à la sandbox MTN peut
+lancer les tests MTN sans voir échouer les autres.
+
+> **État actuel** : les providers sont implémentés d'après les documentations
+> publiques et validés contre des mocks. Ils n'ont pas encore été confrontés à
+> de vraies clés sandbox. Si vous en avez, une fixture qui ne correspond pas à
+> la réalité est la contribution la plus utile.
+
+## Contribution
+
+Le SDK est conçu pour qu'ajouter un opérateur ne touche à rien d'autre :
+quatre méthodes async et un mock server. Le guide complet est dans
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Particularités métier gérées
 
@@ -241,6 +270,31 @@ JSON fixtures under `tests/fixtures/<provider>/`, and test names follow
 [`tests/integration`](tests/integration) lock in interchangeability behind
 `dyn Provider`, and show how to mock the trait with `mockall` in consumer
 code.
+
+### Live tests (optional)
+
+The tests in [`tests/live`](tests/live) hit the **real sandbox APIs**. They
+are all `#[ignore]` and never run in CI:
+
+```bash
+# .env filled with real sandbox keys
+WAVE_LIVE_TESTS=true cargo test --test live -- --ignored --nocapture
+```
+
+Without `WAVE_LIVE_TESTS=true` or without credentials they skip cleanly with
+an explicit message, so a contributor who only has MTN sandbox access can run
+the MTN tests without the other three failing.
+
+> **Current state**: providers are implemented from published API
+> documentation and validated against mocks. They have **not** yet been
+> verified against real sandbox credentials. If you have them, a fixture that
+> doesn't match reality is the most useful contribution you can send.
+
+## Contributing
+
+The SDK is designed so that adding an operator touches nothing else: four
+async methods and a mock server. Full guide in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Domain quirks handled
 

@@ -14,8 +14,15 @@ path = "lib.rs"
 name = "integration"
 path = "integration/main.rs"
 
+# Tests live contre les vraies APIs sandbox — tous `#[ignore]`, jamais en CI.
+# Lancer : WAVE_LIVE_TESTS=true cargo test --test live -- --ignored
+[[test]]
+name = "live"
+path = "live/main.rs"
+
 [dev-dependencies]
 wave-core = { workspace = true }
+dotenvy = { workspace = true }
 wave-wave = { workspace = true }
 wave-orange = { workspace = true }
 wave-mtn = { workspace = true }

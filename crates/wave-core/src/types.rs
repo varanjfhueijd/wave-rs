@@ -315,8 +315,74 @@ mod tests {
     }
 
     #[test]
+    fn test_core_phone_number_letters_after_prefix_rejected() {
+        assert!(matches!(
+            PhoneNumber::parse("+225abc"),
+            Err(WaveError::InvalidPhoneNumber { .. })
+        ));
+    }
+
+    #[test]
+    fn test_core_phone_number_empty_rejected() {
+        assert!(matches!(
+            PhoneNumber::parse(""),
+            Err(WaveError::InvalidPhoneNumber { .. })
+        ));
+    }
+
+    #[test]
+    fn test_core_money_xof_sets_amount_and_currency() {
+        let money = Money::xof(5000);
+        assert_eq!(money.amount, 5000);
+        assert_eq!(money.currency, Currency::XOF);
+        assert_eq!(money, Money::new(5000, Currency::XOF));
+    }
+
+    /// Le montant est un entier : aucune perte de précision, même sur des
+    /// valeurs qu'un f64 arrondirait.
+    #[test]
+    fn test_core_money_large_amount_is_exact() {
+        let money = Money::xof(9_007_199_254_740_993);
+        assert_eq!(money.amount, 9_007_199_254_740_993);
+    }
+
+    #[test]
     fn test_core_money_display() {
         assert_eq!(Money::xof(5000).to_string(), "5000 XOF");
+    }
+
+    #[test]
+    fn test_core_money_serde_roundtrip() {
+        let money = Money::xof(5000);
+        let json = serde_json::to_string(&money).unwrap();
+        let back: Money = serde_json::from_str(&json).unwrap();
+        assert_eq!(back, money);
+    }
+
+    /// Le `rename_all = "snake_case"` doit produire des valeurs stables :
+    /// les fixtures et les APIs opérateur en dépendent.
+    #[test]
+    fn test_core_transaction_status_serde_roundtrip() {
+        let cases = [
+            (TransactionStatus::Pending, "\"pending\""),
+            (TransactionStatus::Successful, "\"successful\""),
+            (TransactionStatus::Failed, "\"failed\""),
+            (TransactionStatus::Cancelled, "\"cancelled\""),
+            (TransactionStatus::Expired, "\"expired\""),
+        ];
+        for (status, expected_json) in cases {
+            let json = serde_json::to_string(&status).unwrap();
+            assert_eq!(json, expected_json);
+            let back: TransactionStatus = serde_json::from_str(&json).unwrap();
+            assert_eq!(back, status);
+        }
+    }
+
+    #[test]
+    fn test_core_list_options_defaults_are_none() {
+        let opts = ListOptions::default();
+        assert_eq!(opts.limit, None);
+        assert_eq!(opts.cursor, None);
     }
 
     #[test]

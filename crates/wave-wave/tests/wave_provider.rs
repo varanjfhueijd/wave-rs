@@ -248,3 +248,39 @@ async fn test_wave_provider_metadata() {
     assert_eq!(provider.name(), "wave");
     assert_eq!(provider.currency(), wave_core::Currency::XOF);
 }
+
+#[tokio::test]
+async fn test_wave_list_transactions_empty_returns_empty_vec() {
+    let server = MockServer::start().await;
+    Mock::given(method("GET"))
+        .and(path("/v1/transactions"))
+        .respond_with(json_response(200, r#"{"items": []}"#))
+        .expect(1)
+        .mount(&server)
+        .await;
+
+    // Un compte sans historique n'est pas une erreur.
+    let txs = provider(&server)
+        .list_transactions(&account(), ListOptions::default())
+        .await
+        .unwrap();
+
+    assert!(txs.is_empty());
+}
+
+#[tokio::test]
+async fn test_wave_malformed_json_returns_serialization_error() {
+    let server = MockServer::start().await;
+    Mock::given(method("GET"))
+        .and(path("/v1/balance"))
+        .respond_with(json_response(200, "{ ceci n'est pas du JSON }"))
+        .mount(&server)
+        .await;
+
+    let err = provider(&server)
+        .check_balance(&account())
+        .await
+        .unwrap_err();
+
+    assert!(matches!(err, WaveError::Serialization(_)));
+}
