@@ -1,0 +1,17 @@
+[package]
+name = "wave-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Types partagés, trait Provider et erreurs du SDK wave-rs"
+
+[dependencies]
+async-trait = { workspace = true }
+phonenumber = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }

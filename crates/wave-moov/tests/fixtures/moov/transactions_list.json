@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "id": "mv_txn_001",
+      "status": "completed",
+      "amount": 12000,
+      "currency": "XOF",
+      "destination": "+2250707070707",
+      "message": "Abonnement Canal",
+      "created_at": "2026-08-10T16:05:00Z"
+    },
+    {
+      "id": "mv_txn_002",
+      "status": "cancelled",
+      "amount": 900,
+      "currency": "XOF",
+      "destination": null,
+      "message": null,
+      "created_at": "2026-08-10T16:20:00Z"
+    }
+  ],
+  "next_cursor": null
+}

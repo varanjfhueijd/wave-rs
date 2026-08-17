@@ -1,0 +1,4 @@
+{
+  "code": "PAYEE_NOT_FOUND",
+  "message": "Payee does not exist on the MoMo network"
+}

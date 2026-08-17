@@ -1,0 +1,12 @@
+{
+  "amount": "7500",
+  "currency": "XOF",
+  "externalId": "ref-001",
+  "payee": {
+    "partyIdType": "MSISDN",
+    "partyId": "2250707070707"
+  },
+  "status": "SUCCESSFUL",
+  "payeeNote": "Scolarité",
+  "createdAt": "2026-08-10T14:20:00Z"
+}

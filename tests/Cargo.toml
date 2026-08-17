@@ -1,0 +1,26 @@
+[package]
+name = "wave-integration-tests"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Tests d'intégration transverses du SDK wave-rs"
+publish = false
+
+[lib]
+path = "lib.rs"
+
+[[test]]
+name = "integration"
+path = "integration/main.rs"
+
+[dev-dependencies]
+wave-core = { workspace = true }
+wave-wave = { workspace = true }
+wave-orange = { workspace = true }
+wave-mtn = { workspace = true }
+wave-moov = { workspace = true }
+async-trait = { workspace = true }
+mockall = { workspace = true }
+tokio = { workspace = true }
+wiremock = { workspace = true }

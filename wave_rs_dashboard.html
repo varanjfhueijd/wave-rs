@@ -1,0 +1,398 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:transparent}
+.app{display:flex;height:600px;border:0.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface-1)}
+.sidebar{width:210px;min-width:210px;border-right:0.5px solid var(--border);background:var(--surface-1);display:flex;flex-direction:column;padding:16px 0}
+.logo{display:flex;align-items:center;gap:8px;padding:0 16px 20px;border-bottom:0.5px solid var(--border);margin-bottom:12px}
+.logo-icon{width:28px;height:28px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:500}
+.logo-text{font-size:14px;font-weight:500;color:var(--text-primary)}
+.logo-version{font-size:10px;color:var(--text-muted);background:var(--surface-0);border:0.5px solid var(--border);border-radius:4px;padding:1px 5px}
+.nav-section{font-size:10px;color:var(--text-muted);padding:0 16px 6px;letter-spacing:0.06em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 16px;cursor:pointer;font-size:13px;color:var(--text-secondary);border-radius:0;transition:background 0.1s}
+.nav-item:hover{background:var(--surface-0);color:var(--text-primary)}
+.nav-item.active{background:var(--bg-success);color:#085041;font-weight:500}
+.nav-item i{font-size:15px;width:16px}
+.nav-sep{height:0.5px;background:var(--border);margin:10px 16px}
+.provider-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--surface-0)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:0.5px solid var(--border);background:var(--surface-1)}
+.topbar-title{font-size:14px;font-weight:500;color:var(--text-primary)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.badge{font-size:11px;padding:3px 8px;border-radius:var(--radius);font-weight:500}
+.badge-success{background:var(--bg-success);color:var(--text-success)}
+.badge-warn{background:var(--bg-warning);color:var(--text-warning)}
+.badge-muted{background:var(--surface-1);border:0.5px solid var(--border);color:var(--text-secondary)}
+.content{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.metric{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 14px}
+.metric-label{font-size:11px;color:var(--text-muted);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.metric-value{font-size:20px;font-weight:500;color:var(--text-primary);line-height:1}
+.metric-sub{font-size:11px;color:var(--text-success);margin-top:3px}
+.metric-sub.neg{color:var(--text-danger)}
+.section-title{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:-4px}
+.card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:12px;overflow:hidden}
+.card-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--border)}
+.card-header-title{font-size:13px;font-weight:500;color:var(--text-primary);display:flex;align-items:center;gap:6px}
+.table{width:100%;border-collapse:collapse}
+.table th{font-size:11px;color:var(--text-muted);font-weight:400;text-align:left;padding:8px 16px;border-bottom:0.5px solid var(--border)}
+.table td{font-size:12px;color:var(--text-primary);padding:9px 16px;border-bottom:0.5px solid var(--border)}
+.table tr:last-child td{border-bottom:none}
+.table tr:hover td{background:var(--surface-0)}
+.tx-id{font-family:var(--font-mono);font-size:11px;color:var(--text-muted)}
+.amount-positive{color:#0F6E56;font-weight:500}
+.amount-negative{color:var(--text-danger);font-weight:500}
+.provider-pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 7px;border-radius:20px;border:0.5px solid var(--border);color:var(--text-secondary);background:var(--surface-0)}
+.status-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.status-ok{background:#1D9E75}
+.status-pending{background:#EF9F27}
+.status-fail{background:#E24B4A}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.provider-row{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:0.5px solid var(--border)}
+.provider-row:last-child{border-bottom:none}
+.provider-name{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-primary)}
+.provider-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff}
+.pbar-wrap{flex:1;height:4px;background:var(--surface-0);border-radius:2px;margin:0 10px}
+.pbar{height:4px;border-radius:2px}
+.cli-box{background:#1a1f2e;border-radius:var(--radius);padding:14px 16px;font-family:var(--font-mono);font-size:12px;line-height:1.7;border:0.5px solid #2d3347}
+.cli-prompt{color:#5DCAA5}
+.cli-cmd{color:#e2e8f0}
+.cli-out{color:#94a3b8}
+.cli-val{color:#9FE1CB}
+.cli-err{color:#F09595}
+.btn-sm{font-size:11px;padding:4px 10px;border:0.5px solid var(--border-strong);border-radius:var(--radius);background:transparent;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px}
+.btn-sm:hover{background:var(--surface-0);color:var(--text-primary)}
+.tabs{display:flex;gap:2px;padding:4px;background:var(--surface-0);border-radius:var(--radius);border:0.5px solid var(--border)}
+.tab{font-size:12px;padding:4px 10px;border-radius:5px;cursor:pointer;color:var(--text-secondary);border:none;background:transparent}
+.tab.active{background:var(--surface-1);color:var(--text-primary);font-weight:500;border:0.5px solid var(--border)}
+</style>
+
+<h2 class="sr-only">wave-rs — Interface de gestion des paiements mobiles africains</h2>
+
+<div class="app">
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">W</div>
+      <div>
+        <div class="logo-text">wave-rs</div>
+      </div>
+      <div class="logo-version">v0.1</div>
+    </div>
+    <div class="nav-section">Principal</div>
+    <div class="nav-item active" onclick="showView('dashboard')">
+      <i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard
+    </div>
+    <div class="nav-item" onclick="showView('transactions')">
+      <i class="ti ti-arrows-exchange" aria-hidden="true"></i> Transactions
+    </div>
+    <div class="nav-item" onclick="showView('payment')">
+      <i class="ti ti-send" aria-hidden="true"></i> Envoyer
+    </div>
+    <div class="nav-section" style="margin-top:10px">Providers</div>
+    <div class="nav-item" onclick="showView('providers')">
+      <div class="provider-dot" style="background:#1D9E75"></div> Wave
+      <span class="badge badge-success" style="margin-left:auto;font-size:10px">actif</span>
+    </div>
+    <div class="nav-item" onclick="showView('providers')">
+      <div class="provider-dot" style="background:#EF9F27"></div> Orange Money
+      <span class="badge badge-success" style="margin-left:auto;font-size:10px">actif</span>
+    </div>
+    <div class="nav-item" onclick="showView('providers')">
+      <div class="provider-dot" style="background:#378ADD"></div> MTN MoMo
+      <span class="badge badge-warn" style="margin-left:auto;font-size:10px">sandbox</span>
+    </div>
+    <div class="nav-item" onclick="showView('providers')">
+      <div class="provider-dot" style="background:#7F77DD"></div> Moov
+      <span class="badge badge-muted" style="margin-left:auto;font-size:10px">bientôt</span>
+    </div>
+    <div class="nav-sep"></div>
+    <div class="nav-item" onclick="showView('cli')">
+      <i class="ti ti-terminal-2" aria-hidden="true"></i> CLI
+    </div>
+    <div class="nav-item" onclick="showView('docs')">
+      <i class="ti ti-book" aria-hidden="true"></i> Docs
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="view-title">Dashboard</div>
+      <div class="topbar-right">
+        <span class="badge badge-success"><span class="status-dot status-ok"></span> Sandbox actif</span>
+        <button class="btn-sm"><i class="ti ti-refresh" aria-hidden="true"></i> Actualiser</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="view-dashboard">
+        <div class="metrics">
+          <div class="metric">
+            <div class="metric-label"><i class="ti ti-arrows-exchange" style="font-size:12px" aria-hidden="true"></i> Transactions</div>
+            <div class="metric-value">1 284</div>
+            <div class="metric-sub">↑ +12% ce mois</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label"><i class="ti ti-coin" style="font-size:12px" aria-hidden="true"></i> Volume (XOF)</div>
+            <div class="metric-value">4,2M</div>
+            <div class="metric-sub">↑ +8% ce mois</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label"><i class="ti ti-check" style="font-size:12px" aria-hidden="true"></i> Taux de succès</div>
+            <div class="metric-value">97,3%</div>
+            <div class="metric-sub neg">↓ -0.4% vs hier</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label"><i class="ti ti-clock" style="font-size:12px" aria-hidden="true"></i> Latence moy.</div>
+            <div class="metric-value">340ms</div>
+            <div class="metric-sub">↑ stable</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="section-title">Transactions récentes</div>
+            <div class="card" style="margin-top:8px">
+              <table class="table">
+                <thead><tr><th>ID</th><th>Montant</th><th>Provider</th><th>Statut</th></tr></thead>
+                <tbody>
+                  <tr><td class="tx-id">txn_8a3f</td><td class="amount-positive">+5 000 XOF</td><td><span class="provider-pill"><span class="status-dot" style="background:#1D9E75"></span>Wave</span></td><td><span class="badge badge-success">succès</span></td></tr>
+                  <tr><td class="tx-id">txn_2b1c</td><td class="amount-negative">-12 500 XOF</td><td><span class="provider-pill"><span class="status-dot" style="background:#EF9F27"></span>Orange</span></td><td><span class="badge badge-success">succès</span></td></tr>
+                  <tr><td class="tx-id">txn_9e4d</td><td class="amount-positive">+3 000 XOF</td><td><span class="provider-pill"><span class="status-dot" style="background:#378ADD"></span>MTN</span></td><td><span class="badge badge-warn">en attente</span></td></tr>
+                  <tr><td class="tx-id">txn_5f7a</td><td class="amount-negative">-8 000 XOF</td><td><span class="provider-pill"><span class="status-dot" style="background:#1D9E75"></span>Wave</span></td><td><span class="badge badge-success">succès</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="section-title">Santé des providers</div>
+            <div class="card" style="margin-top:8px">
+              <div class="provider-row">
+                <div class="provider-name"><div class="provider-icon" style="background:#1D9E75">W</div>Wave</div>
+                <div class="pbar-wrap"><div class="pbar" style="width:98%;background:#1D9E75"></div></div>
+                <span style="font-size:12px;color:#085041;font-weight:500">98%</span>
+              </div>
+              <div class="provider-row">
+                <div class="provider-name"><div class="provider-icon" style="background:#EF9F27">O</div>Orange</div>
+                <div class="pbar-wrap"><div class="pbar" style="width:96%;background:#EF9F27"></div></div>
+                <span style="font-size:12px;color:#854F0B;font-weight:500">96%</span>
+              </div>
+              <div class="provider-row">
+                <div class="provider-name"><div class="provider-icon" style="background:#378ADD">M</div>MTN</div>
+                <div class="pbar-wrap"><div class="pbar" style="width:91%;background:#378ADD"></div></div>
+                <span style="font-size:12px;color:#0C447C;font-weight:500">91%</span>
+              </div>
+              <div class="provider-row">
+                <div class="provider-name"><div class="provider-icon" style="background:#B4B2A9">Mv</div>Moov</div>
+                <div class="pbar-wrap"><div class="pbar" style="width:20%;background:#B4B2A9"></div></div>
+                <span style="font-size:12px;color:var(--text-muted);font-weight:500">N/D</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENT -->
+      <div id="view-payment" style="display:none;max-width:460px">
+        <div class="section-title" style="margin-bottom:8px">Initier un paiement</div>
+        <div class="card">
+          <div class="card-header"><div class="card-header-title"><i class="ti ti-send" aria-hidden="true"></i> Nouveau paiement</div></div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div>
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Provider</div>
+              <select id="pay-provider" style="width:100%;padding:7px 10px;font-size:13px;border:0.5px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-0);color:var(--text-primary)">
+                <option value="wave">Wave</option>
+                <option value="orange">Orange Money</option>
+                <option value="mtn">MTN MoMo (sandbox)</option>
+              </select>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Numéro destinataire (E.164)</div>
+              <input id="pay-phone" type="text" placeholder="+2250700000000" style="width:100%;padding:7px 10px;font-size:13px;border:0.5px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-0);color:var(--text-primary)" />
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Montant (XOF)</div>
+              <input id="pay-amount" type="number" placeholder="5000" style="width:100%;padding:7px 10px;font-size:13px;border:0.5px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-0);color:var(--text-primary)" />
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Note (optionnel)</div>
+              <input id="pay-note" type="text" placeholder="Loyer janvier" style="width:100%;padding:7px 10px;font-size:13px;border:0.5px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-0);color:var(--text-primary)" />
+            </div>
+            <button onclick="simulatePay()" style="width:100%;padding:9px;background:#1D9E75;color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer">Envoyer le paiement</button>
+            <div id="pay-result" style="display:none;font-family:var(--font-mono);font-size:11px;background:var(--surface-0);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px;color:var(--text-primary);line-height:1.6"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROVIDERS -->
+      <div id="view-providers" style="display:none">
+        <div class="section-title" style="margin-bottom:8px">Configuration des providers</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-title"><div class="provider-icon" style="background:#1D9E75;width:20px;height:20px;font-size:9px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;color:#fff;margin-right:4px">W</div> Wave</div>
+              <span class="badge badge-success">connecté</span>
+            </div>
+            <div style="padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+              <div><span style="color:var(--text-muted)">API Key</span><br><span style="font-family:var(--font-mono)">wv_•••••••••f3a2</span></div>
+              <div><span style="color:var(--text-muted)">Merchant ID</span><br><span style="font-family:var(--font-mono)">mer_ci_0041</span></div>
+              <div><span style="color:var(--text-muted)">Environnement</span><br><span class="badge badge-warn">sandbox</span></div>
+              <div><span style="color:var(--text-muted)">Latence</span><br>312ms moy.</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-title"><div class="provider-icon" style="background:#EF9F27;width:20px;height:20px;font-size:9px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;color:#fff;margin-right:4px">O</div> Orange Money</div>
+              <span class="badge badge-success">connecté</span>
+            </div>
+            <div style="padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+              <div><span style="color:var(--text-muted)">Client ID</span><br><span style="font-family:var(--font-mono)">om_•••••••••91bc</span></div>
+              <div><span style="color:var(--text-muted)">Scope</span><br><span style="font-family:var(--font-mono)">payment transfer</span></div>
+              <div><span style="color:var(--text-muted)">Environnement</span><br><span class="badge badge-warn">sandbox</span></div>
+              <div><span style="color:var(--text-muted)">Token exp.</span><br>dans 47min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRANSACTIONS -->
+      <div id="view-transactions" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div class="section-title">Historique</div>
+          <div class="tabs">
+            <button class="tab active" onclick="filterTx('all',this)">Toutes</button>
+            <button class="tab" onclick="filterTx('success',this)">Succès</button>
+            <button class="tab" onclick="filterTx('pending',this)">En attente</button>
+          </div>
+        </div>
+        <div class="card">
+          <table class="table" id="tx-table">
+            <thead><tr><th>ID</th><th>Montant</th><th>Destinataire</th><th>Provider</th><th>Date</th><th>Statut</th></tr></thead>
+            <tbody id="tx-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CLI -->
+      <div id="view-cli" style="display:none">
+        <div class="section-title" style="margin-bottom:8px">Interface CLI — wave</div>
+        <div class="cli-box">
+          <div><span class="cli-prompt">$ </span><span class="cli-cmd">wave providers</span></div>
+          <div class="cli-out">Providers disponibles :</div>
+          <div><span class="cli-val">  ✔ wave</span><span class="cli-out">    (sandbox) latence: 312ms</span></div>
+          <div><span class="cli-val">  ✔ orange</span><span class="cli-out">  (sandbox) latence: 445ms</span></div>
+          <div><span class="cli-val">  ✔ mtn</span><span class="cli-out">     (sandbox) latence: 521ms</span></div>
+          <div><span class="cli-out">  ✗ moov    (non configuré)</span></div>
+          <div style="margin-top:10px"><span class="cli-prompt">$ </span><span class="cli-cmd">wave balance --provider wave --account +2250700000000</span></div>
+          <div class="cli-out">Solde Wave pour +2250700000000 :</div>
+          <div><span class="cli-val">  125 000 XOF</span></div>
+          <div style="margin-top:10px"><span class="cli-prompt">$ </span><span class="cli-cmd">wave pay --provider orange --to +2250100000001 --amount 5000</span></div>
+          <div class="cli-out">Paiement Orange Money initié…</div>
+          <div class="cli-out">En attente de confirmation sur le téléphone (timeout: 90s)</div>
+          <div><span class="cli-val">  ✔ txn_9f2e — Succès — 5 000 XOF envoyés</span></div>
+          <div style="margin-top:10px"><span class="cli-prompt">$ </span><span class="cli-cmd">wave transactions --provider wave --limit 3 --output json</span></div>
+          <div class="cli-out">[</div>
+          <div class="cli-out">  {"id":"txn_8a3f","amount":5000,"status":"<span class="cli-val">success</span>"},</div>
+          <div class="cli-out">  {"id":"txn_5f7a","amount":8000,"status":"<span class="cli-val">success</span>"},</div>
+          <div class="cli-out">  {"id":"txn_1b9c","amount":2500,"status":"<span class="cli-err">failed</span>"}</div>
+          <div class="cli-out">]</div>
+        </div>
+      </div>
+
+      <!-- DOCS -->
+      <div id="view-docs" style="display:none">
+        <div class="section-title" style="margin-bottom:8px">Démarrage rapide</div>
+        <div class="card">
+          <div class="card-header"><div class="card-header-title"><i class="ti ti-brand-rust" aria-hidden="true"></i> Cargo.toml</div></div>
+          <div style="padding:12px 16px">
+            <div class="cli-box" style="font-size:12px">
+              <div style="color:#9FE1CB">[dependencies]</div>
+              <div style="color:#e2e8f0">wave-core = <span style="color:#F0997B">"0.1"</span></div>
+              <div style="color:#e2e8f0">wave-wave = <span style="color:#F0997B">"0.1"</span></div>
+              <div style="color:#e2e8f0">tokio = { version = <span style="color:#F0997B">"1"</span>, features = [<span style="color:#F0997B">"full"</span>] }</div>
+            </div>
+          </div>
+          <div style="padding:0 16px 12px">
+            <div class="cli-box" style="font-size:12px">
+              <div style="color:#94a3b8">use wave_core::{Provider, PaymentRequest, Money};</div>
+              <div style="color:#94a3b8">use wave_wave::WaveProvider;</div>
+              <br>
+              <div style="color:#94a3b8">#[tokio::main]</div>
+              <div style="color:#94a3b8">async fn main() -> Result&lt;(), wave_core::WaveError&gt; {</div>
+              <div style="color:#9FE1CB">    let provider = WaveProvider::from_env()?;</div>
+              <br>
+              <div style="color:#94a3b8">    let response = provider.initiate_payment(PaymentRequest {</div>
+              <div style="color:#94a3b8">        to: <span style="color:#F0997B">"+2250700000000"</span>.parse()?,</div>
+              <div style="color:#94a3b8">        amount: Money::xof(<span style="color:#FAC775">5_000</span>),</div>
+              <div style="color:#94a3b8">        note: Some(<span style="color:#F0997B">"Loyer"</span>.into()),</div>
+              <div style="color:#94a3b8">    }).await?;</div>
+              <br>
+              <div style="color:#9FE1CB">    println!("Txn: {}", response.transaction_id);</div>
+              <div style="color:#94a3b8">    Ok(())</div>
+              <div style="color:#94a3b8">}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const txData = [
+  {id:"txn_8a3f",amount:5000,dir:"credit",phone:"+225 07 00 00 01",provider:"Wave",provColor:"#1D9E75",date:"09/08 14:32",status:"success"},
+  {id:"txn_2b1c",amount:12500,dir:"debit",phone:"+225 01 00 00 02",provider:"Orange",provColor:"#EF9F27",date:"09/08 13:11",status:"success"},
+  {id:"txn_9e4d",amount:3000,dir:"credit",phone:"+225 07 00 00 03",provider:"MTN",provColor:"#378ADD",date:"09/08 12:05",status:"pending"},
+  {id:"txn_5f7a",amount:8000,dir:"debit",phone:"+225 01 00 00 04",provider:"Wave",provColor:"#1D9E75",date:"09/08 10:44",status:"success"},
+  {id:"txn_1b9c",amount:2500,dir:"debit",phone:"+225 07 00 00 05",provider:"Wave",provColor:"#1D9E75",date:"08/08 18:30",status:"failed"},
+  {id:"txn_3d8e",amount:20000,dir:"credit",phone:"+225 01 00 00 06",provider:"Orange",provColor:"#EF9F27",date:"08/08 16:10",status:"success"},
+];
+
+function showView(name){
+  ['dashboard','payment','providers','transactions','cli','docs'].forEach(v=>{
+    document.getElementById('view-'+v).style.display='none';
+  });
+  document.getElementById('view-'+name).style.display='';
+  const titles={dashboard:'Dashboard',payment:'Envoyer un paiement',providers:'Providers',transactions:'Transactions',cli:'CLI',docs:'Documentation'};
+  document.getElementById('view-title').textContent=titles[name]||name;
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  if(name==='transactions') renderTx(txData);
+}
+
+function renderTx(data){
+  const tbody=document.getElementById('tx-body');
+  tbody.innerHTML=data.map(t=>`
+    <tr>
+      <td class="tx-id">${t.id}</td>
+      <td class="${t.dir==='credit'?'amount-positive':'amount-negative'}">${t.dir==='credit'?'+':'-'}${t.amount.toLocaleString()} XOF</td>
+      <td style="font-size:12px;color:var(--text-secondary)">${t.phone}</td>
+      <td><span class="provider-pill"><span class="status-dot" style="background:${t.provColor}"></span>${t.provider}</span></td>
+      <td style="font-size:11px;color:var(--text-muted)">${t.date}</td>
+      <td><span class="badge ${t.status==='success'?'badge-success':t.status==='pending'?'badge-warn':'badge-muted'}">${t.status==='success'?'succès':t.status==='pending'?'en attente':'échoué'}</span></td>
+    </tr>
+  `).join('');
+}
+
+function filterTx(filter,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const data=filter==='all'?txData:txData.filter(t=>t.status===filter);
+  renderTx(data);
+}
+
+function simulatePay(){
+  const provider=document.getElementById('pay-provider').value;
+  const phone=document.getElementById('pay-phone').value||'+2250700000000';
+  const amount=document.getElementById('pay-amount').value||5000;
+  const note=document.getElementById('pay-note').value||'Paiement';
+  const res=document.getElementById('pay-result');
+  res.style.display='';
+  res.innerHTML='<span style="color:#EF9F27">⟳ Paiement en cours… (timeout 90s)</span>';
+  setTimeout(()=>{
+    const id='txn_'+Math.random().toString(36).slice(2,6);
+    res.innerHTML=`<span style="color:#1D9E75">✔ Succès</span>\n<span style="color:var(--text-muted)">id:       </span><span style="color:var(--text-primary)">${id}</span>\n<span style="color:var(--text-muted)">provider: </span><span style="color:var(--text-primary)">${provider}</span>\n<span style="color:var(--text-muted)">to:       </span><span style="color:var(--text-primary)">${phone}</span>\n<span style="color:var(--text-muted)">amount:   </span><span style="color:#1D9E75">${parseInt(amount).toLocaleString()} XOF</span>\n<span style="color:var(--text-muted)">note:     </span><span style="color:var(--text-primary)">${note}</span>`;
+  },2200);
+}
+</script>

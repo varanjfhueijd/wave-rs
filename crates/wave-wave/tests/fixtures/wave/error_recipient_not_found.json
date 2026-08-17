@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "recipient-not-found",
+    "message": "Compte destinataire introuvable"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "txn_wave_001",
+  "status": "successful",
+  "amount": 5000,
+  "currency": "XOF",
+  "counterparty": "+2250707070707",
+  "note": "Loyer",
+  "created_at": "2026-08-10T09:15:00Z"
+}

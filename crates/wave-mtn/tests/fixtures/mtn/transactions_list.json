@@ -1,0 +1,25 @@
+{
+  "transactions": [
+    {
+      "referenceId": "0f14d0ab-9605-4a62-a9e4-5ed26688389b",
+      "amount": "7500",
+      "currency": "XOF",
+      "payee": {
+        "partyIdType": "MSISDN",
+        "partyId": "2250707070707"
+      },
+      "status": "SUCCESSFUL",
+      "payeeNote": "Scolarité",
+      "createdAt": "2026-08-10T14:20:00Z"
+    },
+    {
+      "referenceId": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      "amount": "2000",
+      "currency": "XOF",
+      "payee": null,
+      "payeeNote": null,
+      "status": "FAILED",
+      "createdAt": "2026-08-10T14:35:00Z"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "transaction_id": "OM-2026-001",
+  "status": "SUCCESS",
+  "amount": 7500,
+  "currency": "XOF",
+  "peer_msisdn": "+2250707070707",
+  "note": "Facture CIE",
+  "created_at": "2026-08-10T11:30:00Z"
+}

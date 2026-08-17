@@ -1,0 +1,11 @@
+/target
+.env
+.env.local
+.env.production
+*.env
+!.env.example
+.DS_Store
+coverage/
+demo/*.cast
+REDDIT_POST.md
+articles/

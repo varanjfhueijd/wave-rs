@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "insufficient-funds",
+    "message": "Solde insuffisant pour ce paiement"
+  }
+}
