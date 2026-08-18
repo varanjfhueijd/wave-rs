@@ -1,4 +1,4 @@
-# CLAUDE.md — wave-rs
+# AGENT_CONTEXT.md — wave-rs
 
 ## Vue d'ensemble du projet
 
