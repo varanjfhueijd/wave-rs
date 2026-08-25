@@ -24,7 +24,6 @@ Inclut une CLI (`wave`) pour tester le SDK en terminal.
 | [`crates/wave-moov`](crates/wave-moov) | Provider Moov Africa (clé API) | ✅ |
 | [`cli`](cli) | Binaire `wave` (pay, balance, transactions, status, providers) | ✅ |
 | [`tests`](tests) | Tests d'intégration transverses (`dyn Provider`) | ✅ |
-| [`dashboard`](dashboard) | Dashboard web local branché sur le SDK (axum) | ✅ |
 
 ## Démarrage
 
@@ -77,18 +76,6 @@ wave providers
 ```
 
 Sortie en tableau coloré par défaut, `--output json` pour du machine-readable.
-
-## Dashboard web
-
-```bash
-cargo run -p wave-dashboard        # puis ouvrir http://127.0.0.1:8787
-```
-
-Sert la maquette branchée sur le SDK : disponibilité réelle des providers,
-envoi de paiements et historique des transactions via l'API locale
-(`/api/providers`, `/api/pay`, `/api/balance`, `/api/transactions`,
-`/api/status`). Écoute uniquement sur `127.0.0.1` — aucune exposition réseau.
-Les providers sans credentials dans `.env` apparaissent « non configurés ».
 
 ## Configuration (.env)
 
@@ -179,7 +166,6 @@ Ships with a CLI (`wave`) to try the SDK from the terminal.
 | [`crates/wave-moov`](crates/wave-moov) | Moov Africa provider (API key) | ✅ |
 | [`cli`](cli) | `wave` binary (pay, balance, transactions, status, providers) | ✅ |
 | [`tests`](tests) | Cross-provider integration tests (`dyn Provider`) | ✅ |
-| [`dashboard`](dashboard) | Local web dashboard wired to the SDK (axum) | ✅ |
 
 ## Getting started
 
@@ -232,18 +218,6 @@ wave providers
 ```
 
 Colored table output by default, `--output json` for machine-readable output.
-
-## Web dashboard
-
-```bash
-cargo run -p wave-dashboard        # then open http://127.0.0.1:8787
-```
-
-Serves the mockup wired to the SDK: real provider availability, payment
-sending and transaction history through the local API (`/api/providers`,
-`/api/pay`, `/api/balance`, `/api/transactions`, `/api/status`). Binds to
-`127.0.0.1` only — no network exposure. Providers without credentials in
-`.env` show up as "not configured".
 
 ## Configuration (.env)
 

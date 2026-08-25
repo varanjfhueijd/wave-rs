@@ -8,7 +8,7 @@ members = [
     "crates/wave-moov",
     "cli",
     "tests",
-    "dashboard", "wave-rs",
+    "wave-rs",
 ]
 
 [workspace.package]
@@ -43,9 +43,6 @@ async-trait = "0.1"
 # CLI
 clap = { version = "4", features = ["derive"] }
 comfy-table = "7"
-
-# Dashboard web local (approuvé pour l'étape 9)
-axum = "0.8"
 
 # Logs structurés
 tracing = "0.1"
